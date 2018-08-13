@@ -1,6 +1,7 @@
 FROM openjdk:8-jdk as builder
-COPY . /project
+RUN mkdir -p /project
 WORKDIR /project
+COPY . /project
 RUN ./gradlew build -x test
 
 FROM openjdk:8-jre-alpine
