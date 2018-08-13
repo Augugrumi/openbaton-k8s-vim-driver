@@ -18,7 +18,7 @@ public class Starter {
                 Integer.parseInt(args[2]),
                 Integer.parseInt(args[3]));
         } else {
-            PluginStarter.registerPlugin(K8sVimDriver.class, "openstack", "localhost", 5672, 10);
+            PluginStarter.registerPlugin(K8sVimDriver.class, "k8s-harbor", "localhost", 5672, 10);
         }
     }
 }
