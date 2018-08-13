@@ -14,4 +14,4 @@ ENV RABBITMQ localhost
 ENV RABBITMQ_PORT 5672
 ENV CONSUMERS 5
 
-ENTRYPOINT ["java", "-jar", "plugin-vimdriver-k8s-harbor.jar", "k8s-harbor", "$RABBITMQ", "$RABBITMQ_PORT", "$CONSUMERS"]
+ENTRYPOINT ["sh", "-c", "java -jar plugin-vimdriver-k8s-harbor.jar k8s-harbor $RABBITMQ $RABBITMQ_PORT $CONSUMERS"]
