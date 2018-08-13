@@ -1,5 +1,7 @@
 #Gradle
-.gradle/
+.gradle
+!gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
 build/
 
 # IntelliJ IDEA
