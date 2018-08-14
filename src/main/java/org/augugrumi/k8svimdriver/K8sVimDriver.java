@@ -11,6 +11,15 @@ import org.openbaton.catalogue.security.Key;
 import org.openbaton.exceptions.VimDriverException;
 import org.openbaton.vim.drivers.interfaces.VimDriver;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,27 +32,58 @@ public class K8sVimDriver extends VimDriver {
      */
     private static final Logger LOGGER = Logger.getLogger(K8sVimDriver.class.getName());
 
+    private String makeRequest(String address) throws IOException {
+        StringBuilder result = new StringBuilder();
+        URL url = new URL(address);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String line;
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        rd.close();
+        return result.toString();
+    }
+
+    private String buildRequest(String...args) {
+        return String.join("", args);
+    }
+
     @Override
     public Server launchInstance(BaseVimInstance vimInstance, String name, String image, String flavor, String keypair, Set<VNFDConnectionPoint> networks, Set<String> secGroup, String userData) throws VimDriverException {
         LOGGER.info("launchInstance");
-        return null;
+        try {
+            makeRequest(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
+                    HarborConstants.LAUNCH,
+                    name));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Server();
     }
 
     @Override
     public List<Server> listServer(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listServer");
-        return null;
+        // TODO
+        // I don't know how to do it -> useless?
+        return new ArrayList<>();
     }
 
     @Override
     public Server rebuildServer(BaseVimInstance vimInstance, String serverId, String imageId) throws VimDriverException {
         LOGGER.info("rebuildServer");
+        // TODO
+        // I don't know how to do it -> useless?
         return null;
     }
 
     @Override
     public List<BaseNetwork> listNetworks(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listNetworks");
+        // TODO
+        // I don't know how to do it -> useless?
         return null;
     }
 
@@ -68,13 +108,13 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public Server launchInstanceAndWait(BaseVimInstance vimInstance, String hostname, String image, String extId, String keyPair, Set<VNFDConnectionPoint> networks, Set<String> securityGroups, String s, Map<String, String> floatingIps, Set<Key> keys) throws VimDriverException {
         LOGGER.info("launchInstanceAndWait");
-        return null;
+        return launchInstance(vimInstance, hostname, image, extId, keyPair, networks, securityGroups, s);
     }
 
     @Override
     public Server launchInstanceAndWait(BaseVimInstance vimInstance, String hostname, String image, String extId, String keyPair, Set<VNFDConnectionPoint> networks, Set<String> securityGroups, String s) throws VimDriverException {
         LOGGER.info("launchInstanceAndWait");
-        return null;
+        return launchInstance(vimInstance, hostname, image, extId, keyPair, networks, securityGroups, s);
     }
 
     @Override
