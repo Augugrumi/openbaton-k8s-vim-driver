@@ -11,13 +11,9 @@ import org.openbaton.catalogue.security.Key;
 import org.openbaton.exceptions.VimDriverException;
 import org.openbaton.vim.drivers.interfaces.VimDriver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ public class K8sVimDriver extends VimDriver {
      */
     private static final Logger LOGGER = Logger.getLogger(K8sVimDriver.class.getName());
 
-    private String makeRequest(String address) throws IOException {
+    private String sendGET(String address) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(address);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -44,6 +40,35 @@ public class K8sVimDriver extends VimDriver {
         }
         rd.close();
         return result.toString();
+
+    }
+
+    private String sendPOST(String address, byte[] post) throws IOException {
+
+        URL obj = new URL(address);
+        HttpURLConnection con = (HttpsURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.write(post);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        return response.toString();
+
     }
 
     private String buildRequest(String...args) {
@@ -54,7 +79,7 @@ public class K8sVimDriver extends VimDriver {
     public Server launchInstance(BaseVimInstance vimInstance, String name, String image, String flavor, String keypair, Set<VNFDConnectionPoint> networks, Set<String> secGroup, String userData) throws VimDriverException {
         LOGGER.info("launchInstance");
         try {
-            makeRequest(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
+            sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
                     HarborConstants.LAUNCH,
                     name));
         } catch (IOException e) {
@@ -137,7 +162,15 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public BaseNfvImage addImage(BaseVimInstance vimInstance, BaseNfvImage image, byte[] imageFile) throws VimDriverException {
         LOGGER.info("addImage");
-        return null;
+        LOGGER.info("launchInstance");
+        try {
+            sendPOST(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
+                    HarborConstants.CREATE,
+                    ((K8sImage)image).getId()), imageFile); //TODO do something better?
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     @Override
@@ -149,6 +182,7 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public BaseNfvImage updateImage(BaseVimInstance vimInstance, BaseNfvImage image) throws VimDriverException {
         LOGGER.info("updateImage");
+
         return null;
     }
 
@@ -161,7 +195,14 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public boolean deleteImage(BaseVimInstance vimInstance, BaseNfvImage image) throws VimDriverException {
         LOGGER.info("deleteImage");
-        return false;
+        try {
+            sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
+                    HarborConstants.DELETE,
+                    ((K8sImage)image).getId()));
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override

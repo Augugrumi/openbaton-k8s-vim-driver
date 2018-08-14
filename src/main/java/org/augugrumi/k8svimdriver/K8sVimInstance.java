@@ -22,6 +22,6 @@ public class K8sVimInstance extends GenericVimInstance {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address + HarborConstants.VNF;
     }
 }

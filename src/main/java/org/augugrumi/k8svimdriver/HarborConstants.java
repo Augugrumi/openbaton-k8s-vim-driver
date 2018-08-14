@@ -1,10 +1,11 @@
 package org.augugrumi.k8svimdriver;
 
 public class HarborConstants {
-    public static String LAUNCH = "/launch/";
-    public static String STOP = "/stop/";
-    public static String CREATE = "/create/";
-    public static String DELETE = "/delete/";
-    public static String UPDATE = "/update/";
-    public static String GET = "/get/";
+    public static final String VNF = "/vnf";
+    public static final String LAUNCH = "/launch/";
+    public static final String STOP = "/stop/";
+    public static final String CREATE = "/create/";
+    public static final String DELETE = "/delete/";
+    public static final String UPDATE = "/update/";
+    public static final String GET = "/get/";
 }
