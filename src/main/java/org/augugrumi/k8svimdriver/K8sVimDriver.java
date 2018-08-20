@@ -28,6 +28,10 @@ public class K8sVimDriver extends VimDriver {
      */
     private static final Logger LOGGER = Logger.getLogger(K8sVimDriver.class.getName());
 
+
+    // FIXME use one http client class to make request properly.
+    // http://hc.apache.org/httpcomponents-client-4.5.x/index.html
+    // https://jersey.github.io/
     private String sendGET(String address) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(address);
@@ -85,6 +89,7 @@ public class K8sVimDriver extends VimDriver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // TODO create proper server result when Harbor cli output get parsed correctly
         return new Server();
     }
 
