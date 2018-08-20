@@ -14,10 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class K8sVimInstance extends GenericVimInstance {
-    // TODO add specific for our k8s vim instance
-    private String address = "0.0.0.0";
 
-    public String getAddress() {
+    private String address = System.getenv("HARBOR_ADDRESS") == null ? "0.0.0.0" : System.getenv("HARBOR_ADDRESS");
+
+    String getAddress() {
         return address;
     }
 
