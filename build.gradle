@@ -1,4 +1,4 @@
-group 'org.myplugin.example'
+group 'org.augugrumi.k8svimdriver'
 version '1.0-SNAPSHOT'
 
 buildscript {
