@@ -17,6 +17,12 @@ public class K8sVimInstance extends GenericVimInstance {
 
     private String address = System.getenv("HARBOR_ADDRESS") == null ? "0.0.0.0" : System.getenv("HARBOR_ADDRESS");
 
+    K8sVimInstance () {
+        super();
+        // FIXME use a proper logger
+        System.out.println("Harbor address: " + address);
+    }
+
     String getAddress() {
         return address;
     }
