@@ -161,6 +161,7 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public BaseVimInstance refresh(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("refresh");
+        vimInstance.addAllImages(listImages(vimInstance));
         return vimInstance;
     }
 
