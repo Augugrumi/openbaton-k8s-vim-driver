@@ -143,6 +143,7 @@ public class K8sVimDriver extends VimDriver {
                     // FIXME I do not know what I am doing here
                     k8sImage.setId(name);
                     k8sImage.setExtId(name);
+                    k8sImage.setCreated(new Date());
                     images.add(k8sImage);
                 }
             }
@@ -155,7 +156,9 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public List<DeploymentFlavour> listFlavors(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listFlavors");
-        return null;
+        // TODO check if working
+        // Copied from openbaton go-docker-driver
+        return new ArrayList<>();
     }
 
     @Override
