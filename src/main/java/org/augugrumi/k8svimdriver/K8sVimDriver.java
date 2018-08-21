@@ -45,6 +45,7 @@ public class K8sVimDriver extends VimDriver {
             result.append(line);
         }
         rd.close();
+        LOGGER.info(result.toString());
         return result.toString();
 
     }
