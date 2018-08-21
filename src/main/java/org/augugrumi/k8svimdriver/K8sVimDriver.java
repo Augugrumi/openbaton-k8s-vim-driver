@@ -128,7 +128,7 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public List<BaseNfvImage> listImages(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listImages");
-        /*List<BaseNfvImage> images = new ArrayList<>();
+        List<BaseNfvImage> images = new ArrayList<>();
         try {
             String response =
                     sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(), HarborConstants.LIST));
@@ -149,43 +149,7 @@ public class K8sVimDriver extends VimDriver {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return images;*/
-
-        List<BaseNfvImage> fakeImages = new ArrayList<>();
-
-        BaseNfvImage a1 = new BaseNfvImage();
-        BaseNfvImage a2 = new BaseNfvImage();
-        BaseNfvImage a3 = new BaseNfvImage();
-        BaseNfvImage a4 = new BaseNfvImage();
-        BaseNfvImage a5 = new BaseNfvImage();
-
-        a1.setExtId("123");
-        a1.setId("456");
-        a1.setCreated(new Date());
-
-        a2.setExtId("234");
-        a2.setId("567");
-        a2.setCreated(new Date());
-
-        a3.setExtId("345");
-        a3.setId("678");
-        a3.setCreated(new Date());
-
-        a4.setExtId("456");
-        a4.setId("789");
-        a4.setCreated(new Date());
-
-        a5.setExtId("567");
-        a5.setId("890");
-        a5.setCreated(new Date());
-
-        fakeImages.add(a1);
-        fakeImages.add(a2);
-        fakeImages.add(a3);
-        fakeImages.add(a4);
-        fakeImages.add(a5);
-
-        return fakeImages;
+        return images;
     }
 
     @Override
