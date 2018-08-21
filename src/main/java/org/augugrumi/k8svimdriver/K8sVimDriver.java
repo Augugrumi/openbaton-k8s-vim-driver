@@ -89,6 +89,7 @@ public class K8sVimDriver extends VimDriver {
                     HarborConstants.LAUNCH,
                     name));
         } catch (IOException e) {
+            LOGGER.warning(e.toString());
             e.printStackTrace();
         }
         Server s = new Server();
@@ -98,7 +99,7 @@ public class K8sVimDriver extends VimDriver {
         s.setHypervisorHostName("hypervisorhostname");
 
         // TODO create proper server result when Harbor cli output get parsed correctly
-        return new Server();
+        return s;
     }
 
     @Override
@@ -146,28 +147,11 @@ public class K8sVimDriver extends VimDriver {
                     k8sImage.setExtId(name);
                     images.add(k8sImage);
                 }
-                BaseNfvImage a2 = new BaseNfvImage();
-                a2.setExtId("insideif");
-                a2.setId("567");
-                a2.setCreated(new Date());
-                images.add(a2);
             }
-            BaseNfvImage a1 = new BaseNfvImage();
-            a1.setExtId("afterif");
-            a1.setId("456");
-            a1.setCreated(new Date());
-
-            images.add(a1);
-
         } catch (Exception e) {
+            LOGGER.warning(e.toString());
             e.printStackTrace();
         }
-        BaseNfvImage a3 = new BaseNfvImage();
-        a3.setExtId("outtry");
-        a3.setId("456");
-        a3.setCreated(new Date());
-
-        images.add(a3);
 
         return images;
     }
