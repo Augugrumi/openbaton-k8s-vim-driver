@@ -128,7 +128,7 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public List<BaseNfvImage> listImages(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listImages");
-        List<BaseNfvImage> images = new ArrayList<>();
+        /*List<BaseNfvImage> images = new ArrayList<>();
         try {
             String response =
                     sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(), HarborConstants.LIST));
@@ -149,19 +149,75 @@ public class K8sVimDriver extends VimDriver {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return images;
+        return images;*/
+
+        List<BaseNfvImage> fakeImages = new ArrayList<>();
+
+        BaseNfvImage a1 = new BaseNfvImage();
+        BaseNfvImage a2 = new BaseNfvImage();
+        BaseNfvImage a3 = new BaseNfvImage();
+        BaseNfvImage a4 = new BaseNfvImage();
+        BaseNfvImage a5 = new BaseNfvImage();
+
+        a1.setExtId("123");
+        a1.setId("456");
+        a1.setCreated(new Date());
+
+        a2.setExtId("234");
+        a2.setId("567");
+        a2.setCreated(new Date());
+
+        a3.setExtId("345");
+        a3.setId("678");
+        a3.setCreated(new Date());
+
+        a4.setExtId("456");
+        a4.setId("789");
+        a4.setCreated(new Date());
+
+        a5.setExtId("567");
+        a5.setId("890");
+        a5.setCreated(new Date());
+
+        fakeImages.add(a1);
+        fakeImages.add(a2);
+        fakeImages.add(a3);
+        fakeImages.add(a4);
+        fakeImages.add(a5);
+
+        return fakeImages;
     }
 
     @Override
     public List<DeploymentFlavour> listFlavors(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listFlavors");
-        return null;
+
+        List<DeploymentFlavour> fakeDeployments = new ArrayList<>();
+
+        DeploymentFlavour d1 = new DeploymentFlavour();
+        d1.setDisk(123);
+        d1.setExtId("abc");
+        d1.setFlavour_key("xyz");
+        d1.setRam(1024);
+        d1.setVcpus(4);
+
+        fakeDeployments.add(d1);
+
+        return fakeDeployments;
     }
 
     @Override
     public BaseVimInstance refresh(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("refresh");
+
+        BaseNfvImage newRefresh = new BaseNfvImage();
+
+        newRefresh.setId("refresh");
+        newRefresh.setExtId("refreshext");
+        newRefresh.setCreated(new Date());
+
         vimInstance.addAllImages(listImages(vimInstance));
+        vimInstance.addImage(newRefresh);
         return vimInstance;
     }
 
@@ -185,124 +241,140 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public BaseNetwork createNetwork(BaseVimInstance vimInstance, BaseNetwork network) throws VimDriverException {
         LOGGER.info("createNetwork");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public DeploymentFlavour addFlavor(BaseVimInstance vimInstance, DeploymentFlavour deploymentFlavour) throws VimDriverException {
         LOGGER.info("addFlavor");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public BaseNfvImage addImage(BaseVimInstance vimInstance, BaseNfvImage image, byte[] imageFile) throws VimDriverException {
         LOGGER.info("addImage");
-        LOGGER.info("launchInstance");
-        try {
+
+        /*try {
             sendPOST(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
                     HarborConstants.CREATE,
                     ((K8sImage)image).getId()), imageFile); //TODO do something better?
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        vimInstance.addImage(image);
+
         return image;
     }
 
     @Override
     public BaseNfvImage addImage(BaseVimInstance vimInstance, BaseNfvImage image, String image_url) throws VimDriverException {
         LOGGER.info("addImage");
-        return null;
+
+        vimInstance.addImage(image);
+
+        return image;
     }
 
     @Override
     public BaseNfvImage updateImage(BaseVimInstance vimInstance, BaseNfvImage image) throws VimDriverException {
         LOGGER.info("updateImage");
 
-        return null;
+        BaseNfvImage updatedImage = new BaseNfvImage();
+        updatedImage.setExtId(image.getExtId() + "updatedimageext");
+        updatedImage.setId(image.getId() + "updatedimage");
+        updatedImage.setCreated(new Date());
+
+        vimInstance.addImage(updatedImage);
+
+        return updatedImage;
     }
 
     @Override
     public BaseNfvImage copyImage(BaseVimInstance vimInstance, BaseNfvImage image, byte[] imageFile) throws VimDriverException {
         LOGGER.info("copyImage");
-        return null;
+
+        vimInstance.addImage(image);
+
+        return image;
     }
 
     @Override
     public boolean deleteImage(BaseVimInstance vimInstance, BaseNfvImage image) throws VimDriverException {
         LOGGER.info("deleteImage");
-        try {
+        /*try {
             sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
                     HarborConstants.DELETE,
                     ((K8sImage)image).getId()));
         } catch (IOException e) {
             return false;
-        }
+        }*/
         return true;
     }
 
     @Override
     public DeploymentFlavour updateFlavor(BaseVimInstance vimInstance, DeploymentFlavour deploymentFlavour) throws VimDriverException {
         LOGGER.info("updateFlavor");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean deleteFlavor(BaseVimInstance vimInstance, String extId) throws VimDriverException {
         LOGGER.info("deleteFlavor");
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Subnet createSubnet(BaseVimInstance vimInstance, BaseNetwork createdNetwork, Subnet subnet) throws VimDriverException {
         LOGGER.info("createSubnet");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public BaseNetwork updateNetwork(BaseVimInstance vimInstance, BaseNetwork network) throws VimDriverException {
         LOGGER.info("updateNetwork");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Subnet updateSubnet(BaseVimInstance vimInstance, BaseNetwork updatedNetwork, Subnet subnet) throws VimDriverException {
         LOGGER.info("updateSubnet");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<String> getSubnetsExtIds(BaseVimInstance vimInstance, String network_extId) throws VimDriverException {
         LOGGER.info("getSubnetsExtIds");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean deleteSubnet(BaseVimInstance vimInstance, String existingSubnetExtId) throws VimDriverException {
         LOGGER.info("deleteSubnet");
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean deleteNetwork(BaseVimInstance vimInstance, String extId) throws VimDriverException {
         LOGGER.info("deleteNetwork");
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public BaseNetwork getNetworkById(BaseVimInstance vimInstance, String id) throws VimDriverException {
         LOGGER.info("getNetworkById");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Quota getQuota(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("getQuota");
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getType(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("getType");
-        return null;
+        return "K8sVimInstance";
     }
 }
