@@ -85,7 +85,7 @@ public class K8sVimDriver extends VimDriver {
     public Server launchInstance(BaseVimInstance vimInstance, String name, String image, String flavor, String keypair, Set<VNFDConnectionPoint> networks, Set<String> secGroup, String userData) throws VimDriverException {
         LOGGER.info("launchInstance");
         try {
-            sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(),
+            sendGET(buildRequest(System.getenv("HARBOR_ADDRESS") + "/vnf/",
                     HarborConstants.LAUNCH,
                     name));
         } catch (IOException e) {
@@ -131,7 +131,7 @@ public class K8sVimDriver extends VimDriver {
         List<BaseNfvImage> images = new ArrayList<>();
         try {
             String response =
-                    sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(), HarborConstants.LIST));
+                    sendGET(buildRequest(System.getenv("HARBOR_ADDRESS") + "/vnf/", HarborConstants.LIST));
             LOGGER.warning(response);
             JsonObject jsonResponse = (JsonObject) new JsonParser().parse(response);
             if (jsonResponse.get("result").getAsString().equals("ok")) {
