@@ -162,6 +162,13 @@ public class K8sVimDriver extends VimDriver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        BaseNfvImage a3 = new BaseNfvImage();
+        a3.setExtId("outtry");
+        a3.setId("456");
+        a3.setCreated(new Date());
+
+        images.add(a3);
+
         return images;
     }
 
