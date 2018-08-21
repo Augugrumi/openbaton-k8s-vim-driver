@@ -132,6 +132,7 @@ public class K8sVimDriver extends VimDriver {
         try {
             String response =
                     sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(), HarborConstants.LIST));
+            LOGGER.warning(response);
             JsonObject jsonResponse = (JsonObject) new JsonParser().parse(response);
             if (jsonResponse.get("result").getAsString().equals("ok")) {
                 JsonArray jsonArrayImages = jsonResponse.getAsJsonArray("content");
