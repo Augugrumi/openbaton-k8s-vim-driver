@@ -1,5 +1,10 @@
 package org.augugrumi.k8svimdriver;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import jdk.nashorn.api.scripting.JSObject;
 import org.openbaton.catalogue.mano.common.DeploymentFlavour;
 import org.openbaton.catalogue.mano.descriptor.VNFDConnectionPoint;
 import org.openbaton.catalogue.nfvo.*;
@@ -15,10 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class K8sVimDriver extends VimDriver {
@@ -89,6 +91,12 @@ public class K8sVimDriver extends VimDriver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Server s = new Server();
+        s.setCreated(new Date());
+        s.setFlavor(new DeploymentFlavour());
+        s.setHostName("hostname");
+        s.setHypervisorHostName("hypervisorhostname");
+
         // TODO create proper server result when Harbor cli output get parsed correctly
         return new Server();
     }
@@ -120,7 +128,28 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public List<BaseNfvImage> listImages(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listImages");
-        return null;
+        List<BaseNfvImage> images = new ArrayList<>();
+        try {
+            String response =
+                    sendGET(buildRequest(((K8sVimInstance) vimInstance).getAddress(), HarborConstants.LIST));
+            JsonObject jsonResponse = (JsonObject) new JsonParser().parse(response);
+            if (jsonResponse.get("result").getAsString().equals("ok")) {
+                JsonArray jsonArrayImages = jsonResponse.getAsJsonArray("content");
+                K8sImage k8sImage;
+                String name;
+                for(JsonElement obj : jsonArrayImages) {
+                    name = obj.getAsString();
+                    k8sImage = new K8sImage();
+                    // FIXME I do not know what I am doing here
+                    k8sImage.setId(name);
+                    k8sImage.setExtId(name);
+                    images.add(k8sImage);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return images;
     }
 
     @Override
