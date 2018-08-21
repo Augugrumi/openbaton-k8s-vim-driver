@@ -191,19 +191,9 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public List<DeploymentFlavour> listFlavors(BaseVimInstance vimInstance) throws VimDriverException {
         LOGGER.info("listFlavors");
-
-        List<DeploymentFlavour> fakeDeployments = new ArrayList<>();
-
-        DeploymentFlavour d1 = new DeploymentFlavour();
-        d1.setDisk(123);
-        d1.setExtId("abc");
-        d1.setFlavour_key("xyz");
-        d1.setRam(1024);
-        d1.setVcpus(4);
-
-        fakeDeployments.add(d1);
-
-        return fakeDeployments;
+        // TODO check if working
+        // Copied from openbaton go-docker-driver
+        return new ArrayList<>();
     }
 
     @Override
