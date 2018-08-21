@@ -146,7 +146,19 @@ public class K8sVimDriver extends VimDriver {
                     k8sImage.setExtId(name);
                     images.add(k8sImage);
                 }
+                BaseNfvImage a2 = new BaseNfvImage();
+                a2.setExtId("insideif");
+                a2.setId("567");
+                a2.setCreated(new Date());
+                images.add(a2);
             }
+            BaseNfvImage a1 = new BaseNfvImage();
+            a1.setExtId("afterif");
+            a1.setId("456");
+            a1.setCreated(new Date());
+
+            images.add(a1);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
