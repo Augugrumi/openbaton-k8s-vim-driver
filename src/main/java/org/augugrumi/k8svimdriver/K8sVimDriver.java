@@ -85,8 +85,9 @@ public class K8sVimDriver extends VimDriver {
     @Override
     public Server launchInstance(BaseVimInstance vimInstance, String name, String image, String flavor, String keypair, Set<VNFDConnectionPoint> networks, Set<String> secGroup, String userData) throws VimDriverException {
         LOGGER.info("launchInstance");
+        LOGGER.info(vimInstance.getClass().getName());
         try {
-            sendGET(buildRequest("http://192.168.30.13:31115/vnf/",
+            sendGET(buildRequest(((K8sVimInstance)vimInstance).getAddress(),
                     HarborConstants.LAUNCH,
                     name));
         } catch (IOException e) {
