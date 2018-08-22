@@ -87,7 +87,7 @@ public class K8sVimDriver extends VimDriver {
         LOGGER.info("launchInstance");
         LOGGER.info(vimInstance.getClass().getName());
         try {
-            sendGET(buildRequest(((K8sVimInstance)vimInstance).getAddress(),
+            sendGET(buildRequest("http://192.168.30.13:31115/vnf/",
                     HarborConstants.LAUNCH,
                     name));
         } catch (IOException e) {
